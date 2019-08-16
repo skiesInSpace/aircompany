@@ -2,8 +2,8 @@ package planes;
 
 import java.util.Objects;
 
-public class Plane {
-    protected String model;
+public abstract class Plane {
+    private String model;
     private int maxSpeed;
     private int maxFlightDistance;
     private int maxLoadCapacity;

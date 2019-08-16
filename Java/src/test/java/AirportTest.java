@@ -1,4 +1,5 @@
-import models.ClassificationLevel;
+import models.Airport;
+import models.SecrecyLevel;
 import models.MilitaryTypes;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -12,25 +13,25 @@ import java.util.List;
 
 public class AirportTest {
     private static List<Plane> planes = Arrays.asList(
-            new PassengerPlane(new Plane("Boeing-737", 900, 12000, 60500), 164),
-            new PassengerPlane(new Plane("Boeing-737-800", 940, 12300, 63870), 192),
-            new PassengerPlane(new Plane("Boeing-747", 980, 16100, 70500), 242),
-            new PassengerPlane(new Plane("Airbus A320", 930, 11800, 65500), 188),
-            new PassengerPlane(new Plane("Airbus A330", 990, 14800, 80500), 222),
-            new PassengerPlane(new Plane("Embraer 190", 870, 8100, 30800), 64),
-            new PassengerPlane(new Plane("Sukhoi Superjet 100", 870, 11500, 50500), 140),
-            new PassengerPlane(new Plane("Bombardier CS300", 920, 11000, 60700), 196),
-            new MilitaryPlane(new Plane("B-1B Lancer", 1050, 21000, 80000), MilitaryTypes.BOMBER),
-            new MilitaryPlane(new Plane("B-2 Spirit", 1030, 22000, 70000), MilitaryTypes.BOMBER),
-            new MilitaryPlane(new Plane("B-52 Stratofortress", 1000, 20000, 80000), MilitaryTypes.BOMBER),
-            new MilitaryPlane(new Plane("F-15", 1500, 12000, 10000), MilitaryTypes.FIGHTER),
-            new MilitaryPlane(new Plane("F-22", 1550, 13000, 11000), MilitaryTypes.FIGHTER),
-            new MilitaryPlane(new Plane("C-130 Hercules", 650, 5000, 110000), MilitaryTypes.TRANSPORT),
-            new ExperimentalPlane(new Plane("Bell X-14", 277, 482, 500), ClassificationLevel.SECRET),
-            new ExperimentalPlane(new Plane("Ryan X-13 Vertijet", 560, 307, 500), ClassificationLevel.TOP_SECRET)
+            new PassengerPlane("Boeing-737", 900, 12000, 60500, 164),
+            new PassengerPlane("Boeing-737-800", 940, 12300, 63870, 192),
+            new PassengerPlane("Boeing-747", 980, 16100, 70500, 242),
+            new PassengerPlane("Airbus A320", 930, 11800, 65500, 188),
+            new PassengerPlane("Airbus A330", 990, 14800, 80500, 222),
+            new PassengerPlane("Embraer 190", 870, 8100, 30800, 64),
+            new PassengerPlane("Sukhoi Superjet 100", 870, 11500, 50500, 140),
+            new PassengerPlane("Bombardier CS300", 920, 11000, 60700, 196),
+            new MilitaryPlane("B-1B Lancer", 1050, 21000, 80000, MilitaryTypes.BOMBER),
+            new MilitaryPlane("B-2 Spirit", 1030, 22000, 7000, MilitaryTypes.BOMBER),
+            new MilitaryPlane("B-52 Stratofortress", 1000, 20000, 80000, MilitaryTypes.BOMBER),
+            new MilitaryPlane("F-15", 1500, 12000, 10000, MilitaryTypes.FIGHTER),
+            new MilitaryPlane("F-22", 1550, 13000, 11000, MilitaryTypes.FIGHTER),
+            new MilitaryPlane("C-130 Hercules", 650, 5000, 110000, MilitaryTypes.TRANSPORT),
+            new ExperimentalPlane("Bell X-14", 277, 482, 500, SecrecyLevel.SECRET),
+            new ExperimentalPlane("Ryan X-13 Vertijet", 560, 307, 500, SecrecyLevel.TOP_SECRET)
     );
 
-    private static PassengerPlane planeWithMaxPassengerCapacity = new PassengerPlane(new Plane("Boeing-747", 980, 16100, 70500), 242);
+    private static PassengerPlane planeWithMaxPassengerCapacity = new PassengerPlane("Boeing-747", 980, 16100, 70500, 242);
 
     @Test
     public void verifyTransportMilitaryPlanes() {
@@ -57,7 +58,7 @@ public class AirportTest {
     public void verifyPlanesSortedByMaxLoadCapacity() {
         Airport airport = new Airport(planes);
         airport.sortByMaxLoadCapacity();
-        List<? extends Plane> planesSortedByMaxLoadCapacity = airport.getPlanes();
+        List<Plane> planesSortedByMaxLoadCapacity = (List<Plane>) airport.getPlanes();
 
         boolean nextPlaneMaxLoadCapacityIsHigherThanCurrent = true;
         for (int i = 0; i < planesSortedByMaxLoadCapacity.size() - 1; i++) {
@@ -91,7 +92,7 @@ public class AirportTest {
         List<ExperimentalPlane> experimentalPlanes = airport.getExperimentalPlanes();
         boolean hasUnclassifiedPlanes = false;
         for (ExperimentalPlane experimentalPlane : experimentalPlanes) {
-            if (experimentalPlane.getClassificationLevel() == ClassificationLevel.UNCLASSIFIED) {
+            if (experimentalPlane.getClassificationLevel() == SecrecyLevel.UNCLASSIFIED) {
                 hasUnclassifiedPlanes = true;
                 break;
             }

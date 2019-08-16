@@ -1,28 +1,36 @@
-import models.MilitaryTypes;
+package models;
+
 import planes.ExperimentalPlane;
 import planes.MilitaryPlane;
 import planes.PassengerPlane;
 import planes.Plane;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class Airport {
     private List<? extends Plane> planes;
 
 
-    List<PassengerPlane> getPassengerPlanes() {
-        List<? extends Plane> planeList = this.planes;
-        List<PassengerPlane> passengerPlanes = new ArrayList<>();
-        for (Plane plane : planeList) {
-            if (plane instanceof PassengerPlane) {
-                passengerPlanes.add((PassengerPlane) plane);
-            }
-        }
-        return passengerPlanes;
+    public Airport(List<? extends Plane> planes) {
+        this.planes = planes;
     }
 
-    List<MilitaryPlane> getMilitaryPlanes() {
+    public List<PassengerPlane> getPassengerPlanes() {
+        return this.planes
+                .stream()
+                .filter(plane -> plane instanceof PassengerPlane)
+                .map(plane -> (PassengerPlane) plane)
+                .collect(Collectors.toList());
+
+
+    }
+
+    public List<MilitaryPlane> getMilitaryPlanes() {
         List<? extends Plane> planeList = this.planes;
         List<MilitaryPlane> militaryPlanes = new ArrayList<>();
         for (Plane plane : planeList) {
@@ -33,7 +41,7 @@ public class Airport {
         return militaryPlanes;
     }
 
-    PassengerPlane getPassengerPlaneWithMaxPassengersCapacity() {
+    public PassengerPlane getPassengerPlaneWithMaxPassengersCapacity() {
         List<PassengerPlane> passengerPlanes = getPassengerPlanes();
         PassengerPlane planeWithMaxCapacity = passengerPlanes.get(0);
         for (int i = 0; i < passengerPlanes.size(); i++) {
@@ -45,7 +53,7 @@ public class Airport {
         return planeWithMaxCapacity;
     }
 
-    List<MilitaryPlane> getTransportMilitaryPlanes() {
+    public List<MilitaryPlane> getTransportMilitaryPlanes() {
         List<MilitaryPlane> transportMilitaryPlanes = new ArrayList<>();
         List<MilitaryPlane> militaryPlanes = getMilitaryPlanes();
         for (int i = 0; i < militaryPlanes.size(); i++) {
@@ -57,7 +65,7 @@ public class Airport {
         return transportMilitaryPlanes;
     }
 
-    List<MilitaryPlane> getBomberMilitaryPlanes() {
+    public List<MilitaryPlane> getBomberMilitaryPlanes() {
         List<MilitaryPlane> bomberMilitaryPlanes = new ArrayList<>();
         List<MilitaryPlane> militaryPlanes = getMilitaryPlanes();
         for (MilitaryPlane plane : militaryPlanes) {
@@ -69,7 +77,7 @@ public class Airport {
 
     }
 
-    List<ExperimentalPlane> getExperimentalPlanes() {
+    public List<ExperimentalPlane> getExperimentalPlanes() {
         List<ExperimentalPlane> experimentalPlanes = new ArrayList<>();
         for (Plane plane : planes) {
             if (plane instanceof ExperimentalPlane) {
@@ -79,36 +87,32 @@ public class Airport {
         return experimentalPlanes;
     }
 
-    Airport sortByMaxDistance() {
+    public Airport sortByMaxDistance() {
         Collections.sort(planes, (Comparator<Plane>) (o1, o2) -> o1.getMaxFlightDistance() - o2.getMaxFlightDistance());
         return this;
     }
 
 
-    Airport sortByMaxSpeed() {
+    public Airport sortByMaxSpeed() {
         Collections.sort(planes, (Comparator<Plane>) (o1, o2) -> o1.getMaxSpeed() - o2.getMaxSpeed());
         return this;
     }
 
-    Airport sortByMaxLoadCapacity() {
+    public Airport sortByMaxLoadCapacity() {
         Collections.sort(planes, (Comparator<Plane>) (o1, o2) -> o1.getMaxLoadCapacity() - o2.getMaxLoadCapacity());
         return this;
     }
 
-    List<? extends Plane> getPlanes() {
+    public List<? extends Plane> getPlanes() {
         return planes;
     }
 
 
     @Override
     public String toString() {
-        return "Airport{" +
+        return "models.Airport{" +
                 "planes=" + planes.toString() +
                 '}';
-    }
-
-    Airport(List<? extends Plane> planes) {
-        this.planes = planes;
     }
 
 }
